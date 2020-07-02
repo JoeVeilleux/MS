@@ -1,0 +1,30 @@
+@charset "UTF-8";
+.appTitle {
+  border: none;
+  border-radius: 10px;
+  background-color: #4db6ac;
+  padding: 5px;
+  text-align: left;
+  .button {
+    background-color: red;
+  }
+}
+.appTitleButton {
+	background-color: #ef6c00;
+	color: black;
+	border-radius: 10px;
+}
+.actions {
+	padding-top: 10px;
+}
+h1 {
+	background-color: white;
+	color: #ef6c00;
+}
+h2 {
+    background-color: white;
+    color: blue;
+}
+button {
+	border-radius: 10px;
+}
