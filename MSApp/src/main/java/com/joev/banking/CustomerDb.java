@@ -9,8 +9,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.joev.util.SimpleJsonDb;
 
-public class PassengerDb {
-	private static final Logger logger = LogManager.getLogger(PassengerDb.class);
+public class CustomerDb {
+	private static final Logger logger = LogManager.getLogger(CustomerDb.class);
 
 	protected static final String DB = "Customer";
 	private static final String TABLE = "Passengers";

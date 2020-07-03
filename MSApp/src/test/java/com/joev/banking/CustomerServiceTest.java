@@ -24,8 +24,8 @@ import com.joev.util.SHClient;
 import com.joev.util.SHClient.SHResp;
 import com.joev.util.SimpleJsonDb;
 
-public class PassengerServiceTest {
-	private static final Logger logger = LogManager.getLogger(PassengerServiceTest.class);
+public class CustomerServiceTest {
+	private static final Logger logger = LogManager.getLogger(CustomerServiceTest.class);
 	
 	private static final ObjectMapper mapper = new ObjectMapper();
 	
@@ -64,10 +64,10 @@ public class PassengerServiceTest {
 		logger.info("================================================================================");
 		logger.info("Starting test {}.{}", this.getClass().getSimpleName(), testName.getMethodName());
 		// Initialize the test databases using 'seed' contents from test/resources
-		new PassengerDb().initTables();
+		new CustomerDb().initTables();
 		// Start the service, using an alternate port for testing
 		logger.info("before(): Starting server");
-		server = PassengerService.createServer(TEST_PORT);
+		server = CustomerService.createServer(TEST_PORT);
 		server.start();
 		logger.info("before(): Server is started");
 	}
@@ -78,13 +78,13 @@ public class PassengerServiceTest {
 		server.stop();
 		logger.info("after(): Server is stopped");
 		// Remove the test databases
-		new PassengerDb().rmTables();
+		new CustomerDb().rmTables();
 	}
 	
-	/** Test getting the Passengers list */
+	/** Test getting the Customers list */
 	@Test
-	public void testGetPassengers() throws Exception {
-		SHResp response = SHClient.doHttp(URL_BASE + "/passengers", SHClient.RM.GET, null, SHClient.RP.ACC_JSON);
+	public void testGetCustomers() throws Exception {
+		SHResp response = SHClient.doHttp(URL_BASE + "/customers", SHClient.RM.GET, null, SHClient.RP.ACC_JSON);
 		SHClient.logResponse(response);
 		assertWithMessage("Response code").that(response.responseCode).isEqualTo(Status.OK.getStatusCode());
 		assertWithMessage("Response message").that(response.responseMessage).isEqualTo(Status.OK.getReasonPhrase());
@@ -92,19 +92,19 @@ public class PassengerServiceTest {
 		// Parse response body to list of Customer.Builders. This implicitly verifies that the
 		// response is valid JSON syntax representing a list of objects, each of which is in the
 		// correct form to represent a Customer.Builder (otherwise the parse would fail).
-		Customer.Builder passengers[] = mapper.readValue(response.responseBody, Customer.Builder[].class);
-		logger.info("Successfully parsed response body from JSON to a list of {} passengers:",
-			passengers.length);
-		for (Customer.Builder pb : passengers) {
+		Customer.Builder customers[] = mapper.readValue(response.responseBody, Customer.Builder[].class);
+		logger.info("Successfully parsed response body from JSON to a list of {} customers:",
+			customers.length);
+		for (Customer.Builder pb : customers) {
 			logger.info("  {}", pb.build());
 		}
-		assertThat(passengers).isNotEmpty();
+		assertThat(customers).isNotEmpty();
 	}
 	
 	/** Test creating a new Passenter */
 	@Test
-	public void testCreatePassenger() throws Exception {
-		SHResp response = SHClient.doHttp(URL_BASE + "/passengers", SHClient.RM.POST, TEST_NEWUSER_JSON, SHClient.RP.CON_JSON, SHClient.RP.ACC_JSON);
+	public void testCreateCustomer() throws Exception {
+		SHResp response = SHClient.doHttp(URL_BASE + "/customers", SHClient.RM.POST, TEST_NEWUSER_JSON, SHClient.RP.CON_JSON, SHClient.RP.ACC_JSON);
 		SHClient.logResponse(response);
 		assertWithMessage("Response code").that(response.responseCode).isEqualTo(Status.CREATED.getStatusCode());
 		assertWithMessage("Response message").that(response.responseMessage).isEqualTo(Status.CREATED.getReasonPhrase());
@@ -114,7 +114,7 @@ public class PassengerServiceTest {
 		List<String> locations = response.responseHeaders.get(RESPONSE_HEADER_KEY_LOCATION);
 		assertThat(locations.size()).isEqualTo(1);
 		String location = locations.get(0);
-		assertThat(location).startsWith(URL_BASE + "/passengers");
+		assertThat(location).startsWith(URL_BASE + "/customers");
 		// TODO: Consider enhancing this verification to:
 		// 1. Actually GET the 'location' URL, expecting it to return the newly-created Customer
 		// 2. Access the database directly to count the items before/after, or maybe even to
@@ -123,24 +123,24 @@ public class PassengerServiceTest {
 	
 	/** Test reading a specific Customer's information */
 	@Test
-	public void testGetPassenger() throws Exception {
-		SHResp response = SHClient.doHttp(URL_BASE + "/passengers/" + TEST_ID, SHClient.RM.GET, null, SHClient.RP.ACC_JSON);
+	public void testGetCustomer() throws Exception {
+		SHResp response = SHClient.doHttp(URL_BASE + "/customers/" + TEST_ID, SHClient.RM.GET, null, SHClient.RP.ACC_JSON);
 		SHClient.logResponse(response);
 		assertWithMessage("Response code").that(response.responseCode).isEqualTo(Status.OK.getStatusCode());
 		assertWithMessage("Response message").that(response.responseMessage).isEqualTo(Status.OK.getReasonPhrase());
 		assertThat(response.responseBody).isNotEmpty();
 		// Parse response body to a Customer.Builder. This implicitly verifies that the response is
 		// valid JSON syntax representing a Customer.Builder (otherwise the parse would fail).
-		Customer.Builder passenger = mapper.readValue(response.responseBody, Customer.Builder.class);
+		Customer.Builder customer = mapper.readValue(response.responseBody, Customer.Builder.class);
 		logger.info("Successfully parsed response body from JSON to a Customer: {}",
-			passenger.build());
-		assertThat(passenger.id().get()).isEqualTo(TEST_ID);
+			customer.build());
+		assertThat(customer.id().get()).isEqualTo(TEST_ID);
 	}
 	
 	/** Test reading a nonexistent Customer's information */
 	@Test
-	public void testGetPassenger_NotExist() throws Exception {
-		SHResp response = SHClient.doHttp(URL_BASE + "/passengers/" + TEST_ID_BAD, SHClient.RM.GET, null, SHClient.RP.ACC_JSON);
+	public void testGetCustomer_NotExist() throws Exception {
+		SHResp response = SHClient.doHttp(URL_BASE + "/customers/" + TEST_ID_BAD, SHClient.RM.GET, null, SHClient.RP.ACC_JSON);
 		SHClient.logResponse(response);
 		assertWithMessage("Response code").that(response.responseCode).isEqualTo(Status.NOT_FOUND.getStatusCode());
 		assertWithMessage("Response message").that(response.responseMessage).isEqualTo(Status.NOT_FOUND.getReasonPhrase());
@@ -149,24 +149,24 @@ public class PassengerServiceTest {
 	
 	/** Test updating a Customer */
 	@Test
-	public void testUpdatePassenger() throws Exception {
+	public void testUpdateCustomer() throws Exception {
 		// ARRANGE: get the Customer's original data, then modify part of it
-		SHResp response = SHClient.doHttp(URL_BASE + "/passengers/" + TEST_ID, SHClient.RM.GET, null, SHClient.RP.ACC_JSON);
+		SHResp response = SHClient.doHttp(URL_BASE + "/customers/" + TEST_ID, SHClient.RM.GET, null, SHClient.RP.ACC_JSON);
 		Customer.Builder origPB = mapper.readValue(response.responseBody, Customer.Builder.class);
 		Customer origP = origPB.build();
 		logger.info("Original Customer: {}", origP);
 		Customer modP = Customer.builder().id(origP.id()).name(TEST_MODUSER_NAME).address(origP.address()).build();
 		logger.info("Modified Customer: {}", modP);
 
-		// ACT: Make an HTTP 'PUT' request to update the passenger
+		// ACT: Make an HTTP 'PUT' request to update the customer
 		String modPJson = mapper.writeValueAsString(modP);
-		response = SHClient.doHttp(URL_BASE + "/passengers/" + TEST_ID, SHClient.RM.PUT, modPJson, SHClient.RP.CON_JSON);
+		response = SHClient.doHttp(URL_BASE + "/customers/" + TEST_ID, SHClient.RM.PUT, modPJson, SHClient.RP.CON_JSON);
 		SHClient.logResponse(response);
 		
 		// ASSERT: Response=OK, and GET shows that the Customer has been updated
 		assertWithMessage("Response code").that(response.responseCode).isEqualTo(Status.OK.getStatusCode());
 		assertWithMessage("Response message").that(response.responseMessage).isEqualTo(Status.OK.getReasonPhrase());
-		response = SHClient.doHttp(URL_BASE + "/passengers/" + TEST_ID, SHClient.RM.GET, null, SHClient.RP.ACC_JSON);
+		response = SHClient.doHttp(URL_BASE + "/customers/" + TEST_ID, SHClient.RM.GET, null, SHClient.RP.ACC_JSON);
 		Customer verifyP = mapper.readValue(response.responseBody, Customer.Builder.class).build();
 		logger.info("Customer from GET after update: {}", verifyP);
 		assertThat(verifyP).isEqualTo(modP);
@@ -174,16 +174,16 @@ public class PassengerServiceTest {
 
 	/** Test updating a nonexistent Customer */
 	@Test
-	public void testUpdatePassenger_NotExist() throws Exception {
+	public void testUpdateCustomer_NotExist() throws Exception {
 		// ARRANGE: get a sample Customer's data, then modify it to appear to be for a Customer
 		// that does not exist
-		SHResp response = SHClient.doHttp(URL_BASE + "/passengers/" + TEST_ID, SHClient.RM.GET, null, SHClient.RP.ACC_JSON);
+		SHResp response = SHClient.doHttp(URL_BASE + "/customers/" + TEST_ID, SHClient.RM.GET, null, SHClient.RP.ACC_JSON);
 		Customer.Builder pb = mapper.readValue(response.responseBody, Customer.Builder.class);
 		pb.id(TEST_ID_BAD);
 
-		// ACT: Make an HTTP 'PUT' request to update the passenger
+		// ACT: Make an HTTP 'PUT' request to update the customer
 		String modPJson = mapper.writeValueAsString(pb.build());
-		response = SHClient.doHttp(URL_BASE + "/passengers/" + TEST_ID_BAD, SHClient.RM.PUT, modPJson, SHClient.RP.CON_JSON);
+		response = SHClient.doHttp(URL_BASE + "/customers/" + TEST_ID_BAD, SHClient.RM.PUT, modPJson, SHClient.RP.CON_JSON);
 		SHClient.logResponse(response);
 		
 		// ASSERT: Response=NOT_FOUND
@@ -196,19 +196,19 @@ public class PassengerServiceTest {
 	 * a different Id in the JSON payload)
 	 */
 	@Test
-	public void testUpdatePassenger_MismatchId() throws Exception {
+	public void testUpdateCustomer_MismatchId() throws Exception {
 		// ARRANGE: get the Customer's original data, then modify part of it
-		SHResp response = SHClient.doHttp(URL_BASE + "/passengers/" + TEST_ID, SHClient.RM.GET, null, SHClient.RP.ACC_JSON);
+		SHResp response = SHClient.doHttp(URL_BASE + "/customers/" + TEST_ID, SHClient.RM.GET, null, SHClient.RP.ACC_JSON);
 		Customer.Builder origPB = mapper.readValue(response.responseBody, Customer.Builder.class);
 		Customer origP = origPB.build();
 		logger.info("Original Customer: {}", origP);
 		Customer modP = Customer.builder().id(origP.id()).name(TEST_MODUSER_NAME).address(origP.address()).build();
 		logger.info("Modified Customer: {}", modP);
 
-		// ACT: Make an HTTP 'PUT' request to update the passenger, but specify a different ID in
+		// ACT: Make an HTTP 'PUT' request to update the customer, but specify a different ID in
 		// the URL than in the JSON payload
 		String modPJson = mapper.writeValueAsString(modP);
-		response = SHClient.doHttp(URL_BASE + "/passengers/" + TEST_ID2, SHClient.RM.PUT, modPJson, SHClient.RP.CON_JSON);
+		response = SHClient.doHttp(URL_BASE + "/customers/" + TEST_ID2, SHClient.RM.PUT, modPJson, SHClient.RP.CON_JSON);
 		SHClient.logResponse(response);
 		
 		// ASSERT: Response=BAD_REQUEST
@@ -218,23 +218,23 @@ public class PassengerServiceTest {
 
 	/** Test deleting a specific Customer */
 	@Test
-	public void testDeletePassenger() throws Exception {
-		SHResp delResponse = SHClient.doHttp(URL_BASE + "/passengers/" + TEST_ID, SHClient.RM.DELETE, null, SHClient.RP.ACC_TEXT);
+	public void testDeleteCustomer() throws Exception {
+		SHResp delResponse = SHClient.doHttp(URL_BASE + "/customers/" + TEST_ID, SHClient.RM.DELETE, null, SHClient.RP.ACC_TEXT);
 
 		SHClient.logResponse(delResponse);
 		assertWithMessage("Response code").that(delResponse.responseCode).isEqualTo(Status.OK.getStatusCode());
 		assertWithMessage("Response message").that(delResponse.responseMessage).isEqualTo(Status.OK.getReasonPhrase());
 		assertThat(delResponse.responseBody).isNotEmpty();
 		// Verify that the Customer has in fact been deleted, by trying to GET it (should fail)
-		SHResp getResponse = SHClient.doHttp(URL_BASE + "/passengers/" + TEST_ID, SHClient.RM.GET, null, SHClient.RP.ACC_JSON);
+		SHResp getResponse = SHClient.doHttp(URL_BASE + "/customers/" + TEST_ID, SHClient.RM.GET, null, SHClient.RP.ACC_JSON);
 		SHClient.logResponse(getResponse);
 		assertWithMessage("Response code").that(getResponse.responseCode).isEqualTo(Status.NOT_FOUND.getStatusCode());
 	}
 	
 	/** Test deleting a nonexistent Customer */
 	@Test
-	public void testDeletePassenger_NotExist() throws Exception {
-		SHResp response = SHClient.doHttp(URL_BASE + "/passengers/" + TEST_ID_BAD, SHClient.RM.DELETE, null, SHClient.RP.ACC_JSON);
+	public void testDeleteCustomer_NotExist() throws Exception {
+		SHResp response = SHClient.doHttp(URL_BASE + "/customers/" + TEST_ID_BAD, SHClient.RM.DELETE, null, SHClient.RP.ACC_JSON);
 		SHClient.logResponse(response);
 		assertWithMessage("Response code").that(response.responseCode).isEqualTo(Status.NOT_FOUND.getStatusCode());
 		assertWithMessage("Response message").that(response.responseMessage).isEqualTo(Status.NOT_FOUND.getReasonPhrase());

@@ -25,11 +25,11 @@ import org.apache.logging.log4j.Logger;
 import com.sun.jersey.api.NotFoundException;
 
 @Path("/")
-public class PassengerServlet {
-	private static final Logger logger = LogManager.getLogger(PassengerServlet.class);
+public class CustomerServlet {
+	private static final Logger logger = LogManager.getLogger(CustomerServlet.class);
 	// TODO: Need more logging in this module
 
-	private PassengerDb passengerDb = new PassengerDb();
+	private CustomerDb passengerDb = new CustomerDb();
 
 	@Context
 	UriInfo uriInfo;

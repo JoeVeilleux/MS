@@ -14,8 +14,8 @@ import org.junit.rules.TestName;
 /**
  * Unit test for Customer.
  */
-public class PassengerTest {
-	private static final Logger logger = LogManager.getLogger(PassengerTest.class);
+public class CustomerTest {
+	private static final Logger logger = LogManager.getLogger(CustomerTest.class);
 	
 	@Rule public TestName testName = new TestName();
 	

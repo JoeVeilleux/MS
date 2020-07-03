@@ -121,7 +121,7 @@
                                     implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                                 <transformer
                                     implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.joev.banking.PassengerService</mainClass>
+                                    <mainClass>com.joev.banking.CustomerService</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

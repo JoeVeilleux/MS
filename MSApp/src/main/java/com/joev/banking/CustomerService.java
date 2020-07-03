@@ -11,8 +11,8 @@ import com.sun.jersey.spi.container.servlet.ServletContainer;
 /**
  * Run the Customer REST service listening on a specific port
  */
-public class PassengerService {
-	private static final Logger LOG = Log.getLogger(PassengerService.class);
+public class CustomerService {
+	private static final Logger LOG = Log.getLogger(CustomerService.class);
 
 	// TODO: Provide a way to specify this dynamically
 	private static final int PORT = 8000;

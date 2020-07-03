@@ -19,8 +19,8 @@ import org.junit.rules.TestName;
 
 import com.joev.util.SimpleJsonDb;
 
-public class PassengerDbTest {
-	private static final Logger logger = LogManager.getLogger(PassengerDbTest.class);
+public class CustomerDbTest {
+	private static final Logger logger = LogManager.getLogger(CustomerDbTest.class);
 	
 	@Rule public TestName testName = new TestName();
 
@@ -28,7 +28,7 @@ public class PassengerDbTest {
 	private static final String TEST_ID_BAD = "999";
 	private static final int EXPECTED_NROWS = 4; // Number of rows in sample/test data
 	
-	public PassengerDb db;
+	public CustomerDb db;
 	
 	@BeforeClass
 	public static void beforeClass() throws IOException {
@@ -46,7 +46,7 @@ public class PassengerDbTest {
 	public void before() throws IOException {
 		logger.info("================================================================================");
 		logger.info("Starting test {}.{}", this.getClass().getSimpleName(), testName.getMethodName());
-		db = new PassengerDb();
+		db = new CustomerDb();
 		// Initialize the test databases using 'seed' contents from test/resources
 		db.initTables();
 	}
