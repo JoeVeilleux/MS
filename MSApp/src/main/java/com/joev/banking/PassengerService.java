@@ -1,4 +1,4 @@
-package com.joev.ridesharing;
+package com.joev.banking;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -28,7 +28,7 @@ public class PassengerService {
 		servletHolder.setInitOrder(0);
 
 		// Tell the Jersey Servlet which REST service/classes to load
-		servletHolder.setInitParameter("com.sun.jersey.config.property.packages", "com.joev.ridesharing");
+		servletHolder.setInitParameter("com.sun.jersey.config.property.packages", "com.joev.banking");
 
 		// Tell the Jersey Servlet to use the POJO mapping feature
 		servletHolder.setInitParameter("com.sun.jersey.api.json.POJOMappingFeature", "true");

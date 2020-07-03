@@ -1,4 +1,4 @@
-package com.joev.ridesharing;
+package com.joev.banking;
 
 import java.net.URI;
 import java.util.List;
@@ -23,6 +23,7 @@ import org.apache.logging.log4j.Logger;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
+import com.joev.banking.Passenger;
 import com.sun.jersey.api.NotFoundException;
 
 @Path("/")

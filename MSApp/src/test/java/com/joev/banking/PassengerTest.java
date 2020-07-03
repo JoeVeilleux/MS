@@ -1,4 +1,4 @@
-package com.joev.ridesharing;
+package com.joev.banking;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -10,6 +10,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+
+import com.joev.banking.Passenger;
 
 /**
  * Unit test for Passenger.

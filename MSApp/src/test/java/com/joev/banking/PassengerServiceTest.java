@@ -1,4 +1,4 @@
-package com.joev.ridesharing;
+package com.joev.banking;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -20,6 +20,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
+import com.joev.banking.Passenger;
+import com.joev.banking.PassengerDb;
+import com.joev.banking.PassengerService;
 import com.joev.util.SHClient;
 import com.joev.util.SimpleJsonDb;
 import com.joev.util.SHClient.SHResp;

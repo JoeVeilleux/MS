@@ -1,4 +1,4 @@
-package com.joev.ridesharing;
+package com.joev.banking;
 
 import java.io.Serializable;
 import java.util.Optional;
@@ -7,6 +7,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
 import com.google.auto.value.AutoValue;
+import com.joev.banking.AutoValue_Passenger;
 
 @AutoValue
 public abstract class Passenger implements Serializable {

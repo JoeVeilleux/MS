@@ -13,7 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.joev.ridesharing.Passenger;
+import com.joev.banking.Passenger;
 import com.joev.util.SHClient;
 import com.joev.util.SHClient.SHResp;
 
