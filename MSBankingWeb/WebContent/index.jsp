@@ -4,21 +4,20 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Ridesharing Web UI</title>
-<link rel="stylesheet" type="text/css" href="Rideshare.css">
+<title>Banking Web UI</title>
+<link rel="stylesheet" type="text/css" href="Banking.css">
 </head>
 <body>
 <div class="appTitle">
 <a href=<% out.print(request.getContextPath()); %>><button class="appTitleButton" type="button" id="nav_home">
-<img src="limo.png" alt="Ridesharing Web UI" style="width:180px;height:60px;">
+<img src="bank.png" alt="Banking Web UI" style="width:280px;height:40px;">
 </button></a>
 </div>
 <h1>What would you like to do?</h1>
 <p>Select one of the buttons below to perform the indicated action:</p>
 <div class="actions">
 <a href="passengers"><button type="button" id="action_passengers">Manage Passengers</button></a>
-<a href="drivers"><button type="button" id="action_drivers">Manage Drivers</button></a>
-<a href="rides"><button type="button" id="action_rides">Manage Rides</button></a>
+<a href="accounts"><button type="button" id="action_accounts">Manage Accounts</button></a>
 </div>
 </body>
 </html>
