@@ -16,7 +16,7 @@
 <h1>What would you like to do?</h1>
 <p>Select one of the buttons below to perform the indicated action:</p>
 <div class="actions">
-<a href="passengers"><button type="button" id="action_passengers">Manage Passengers</button></a>
+<a href="customers"><button type="button" id="action_customers">Manage Customers</button></a>
 <a href="accounts"><button type="button" id="action_accounts">Manage Accounts</button></a>
 </div>
 </body>

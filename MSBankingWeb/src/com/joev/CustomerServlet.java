@@ -18,12 +18,12 @@ import com.joev.util.SHClient;
 import com.joev.util.SHClient.SHResp;
 
 /**
- * Servlet implementation class PassengerServlet
+ * Servlet implementation class CustomerServlet
  */
-@WebServlet("/passengers")
-public class PassengerServlet extends HttpServlet {
+@WebServlet("/customers")
+public class CustomerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LogManager.getLogger(PassengerServlet.class);
+	private static final Logger logger = LogManager.getLogger(CustomerServlet.class);
 
 	private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -36,7 +36,7 @@ public class PassengerServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public PassengerServlet() {
+	public CustomerServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -64,7 +64,7 @@ public class PassengerServlet extends HttpServlet {
 		return sb.toString();
 	}
 
-	private String getHtmlPassengerDetail(Customer p) {
+	private String getHtmlCustomerDetail(Customer p) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table border='1'>");
 		sb.append("<tr><td>Id</td><td>" + p.id() + "</td></tr>");
@@ -90,18 +90,18 @@ public class PassengerServlet extends HttpServlet {
 
 		String reqId = request.getParameter("id");
 		if (reqId == null) {
-			// No id specified; show the list of all Passengers
+			// No id specified; show the list of all Customers
 			body.append(getHtmlPageTop());
-			body.append("<h1>Manage Passengers</h1>");
-			body.append("<p>Click the Id of a passenger to see their details and perform actions."
-					+ " Click the 'New Customer' button to create a new passenger.</p>");
-			SHResp srvResponse = SHClient.doHttp(URL_BASE + "/passengers", SHClient.RM.GET, null, SHClient.RP.ACC_JSON);
+			body.append("<h1>Manage Customers</h1>");
+			body.append("<p>Click the Id of a customer to see their details and perform actions."
+					+ " Click the 'New Customer' button to create a new customer.</p>");
+			SHResp srvResponse = SHClient.doHttp(URL_BASE + "/customers", SHClient.RM.GET, null, SHClient.RP.ACC_JSON);
 			SHClient.logResponse(srvResponse);
 			String data = srvResponse.responseBody;
-			Customer.Builder passengers[] = mapper.readValue(data, Customer.Builder[].class);
+			Customer.Builder customers[] = mapper.readValue(data, Customer.Builder[].class);
 			body.append("<table border='1'>");
 			body.append("<tr><th>Id</th><th>Name</th><th>Address</th></tr>");
-			for (Customer.Builder pb : passengers) {
+			for (Customer.Builder pb : customers) {
 			    Customer p = pb.build();
 				body.append("<tr>").append("<td>")
 						.append("<a href=" + request.getRequestURL() + "?id=" + p.id() + ">" + p.id() + "</a>")
@@ -112,14 +112,14 @@ public class PassengerServlet extends HttpServlet {
 			// Add "New" button to create a new Customer...
 			body.append("<div class=\"actions\">");
 			body.append(
-					"<a href=\"newpassenger.jsp\">"
-					+ "<button type=\"button\" id=\"new_passenger\">New Customer</button>"
+					"<a href=\"newcustomer.jsp\">"
+					+ "<button type=\"button\" id=\"new_customer\">New Customer</button>"
 					+ "</a>");
 			body.append("</div>");
 		} else {
-			// A passenger-id was specified
+			// A customer-id was specified
 			// Get the Customer's current details
-			SHResp srvResponse = SHClient.doHttp(URL_BASE + "/passengers/" + reqId, SHClient.RM.GET, null,
+			SHResp srvResponse = SHClient.doHttp(URL_BASE + "/customers/" + reqId, SHClient.RM.GET, null,
 					SHClient.RP.ACC_JSON);
 			SHClient.logResponse(srvResponse);
 			String data = srvResponse.responseBody;
@@ -128,29 +128,29 @@ public class PassengerServlet extends HttpServlet {
 			// See what action was requested
 			String action = request.getParameter("action");
 			if (action == null) {
-				// No 'action' specified; show passenger details, with buttons to Edit / Delete
+				// No 'action' specified; show customer details, with buttons to Edit / Delete
 				body.append(getHtmlPageTop());
 				body.append("<h1>Customer " + reqId + " Details</h1>");
-				body.append(getHtmlPassengerDetail(p));
+				body.append(getHtmlCustomerDetail(p));
 				body.append("<div class=\"actions\">");
 				body.append("<a href=" + request.getRequestURL() + ">"
 						+ "<button type=\"button\" id=\"cancel\">Cancel</button></a>");
 				body.append("<a href=" + request.getRequestURL() + "?id=" + p.id() + "&action=edit>"
-						+ "<button type=\"button\" id=\"edit_passenger\">Edit Customer</button></a>");
+						+ "<button type=\"button\" id=\"edit_customer\">Edit Customer</button></a>");
 				body.append("<a href=" + request.getRequestURL() + "?id=" + p.id() + "&action=confirmdelete>"
-						+ "<button type=\"button\" id=\"del_passenger\">Delete Customer</button></a>");
+						+ "<button type=\"button\" id=\"del_customer\">Delete Customer</button></a>");
 				body.append("</div>");
 			} else if (action.equals("edit")) {
-				// action=edit: show the passenger's details in editable mode
+				// action=edit: show the customer's details in editable mode
 				body.append(getHtmlPageTop());
 				String header = "Edit Customer";
 				String instructions = "Make any desired changes and click 'Save' to commit, or click"
-						+ " 'Cancel' to quit without modifying the passenger.";
+						+ " 'Cancel' to quit without modifying the customer.";
 				body.append(
 					String.format(
 						"<h1>%s</h1>\n" + 
 						"<p>%s</p>\n" + 
-						"<form action=\"passengers\" method=\"post\">\n" + 
+						"<form action=\"customers\" method=\"post\">\n" + 
 						"  <table border=\"1\">\n" + 
 						"    <tr><th>Id</th><td><input type=\"text\" name=\"id\" size=\"5\" value=\"%s\" readonly></td></tr>\n" + 
 						"    <tr><th>Name</th><td><input type=\"text\" name=\"name\" size=\"20\" value=\"%s\"></td></tr>\n" + 
@@ -163,12 +163,12 @@ public class PassengerServlet extends HttpServlet {
 					)
 				);
 			} else if (action.equals("confirmdelete")) {
-				// action=confirmdelete: show the passenger's details, with a 'Confirm' button
+				// action=confirmdelete: show the customer's details, with a 'Confirm' button
 				body.append(getHtmlPageTop());
 				body.append("<h1>Confirm Customer " + reqId + " Delete</h1>");
-				body.append(getHtmlPassengerDetail(p));
+				body.append(getHtmlCustomerDetail(p));
 				body.append("<p>Click the 'Confirm' button to confirm that you would like to delete"
-						+ " this passenger, or click 'Cancel' to quit without deleting the passenger.</p>");
+						+ " this customer, or click 'Cancel' to quit without deleting the customer.</p>");
 				body.append("<div class=\"actions\">");
 				body.append("<a href=" + request.getRequestURL() + ">"
 						+ "<button type=\"button\" id=\"cancel\">Cancel</button></a>");
@@ -177,7 +177,7 @@ public class PassengerServlet extends HttpServlet {
 				body.append("</div>");
 			} else if (action.equals("delete")) {
 				// action=delete: delete the Customer
-				srvResponse = SHClient.doHttp(URL_BASE + "/passengers/" + reqId, SHClient.RM.DELETE, null,
+				srvResponse = SHClient.doHttp(URL_BASE + "/customers/" + reqId, SHClient.RM.DELETE, null,
 						SHClient.RP.ACC_TEXT);
 				SHClient.logResponse(srvResponse);
 				body.append(getHtmlPageTop());
@@ -220,12 +220,12 @@ public class PassengerServlet extends HttpServlet {
 			String requestBody;
 			if (id == null) {
 				// No id, so this is a request to create a new Customer
-				url = URL_BASE + "/passengers";
+				url = URL_BASE + "/customers";
 				requestMethod = SHClient.RM.POST;
 				requestBody = "{\"name\":\"" + name + "\",\"address\":\"" + address + "\"}";
 			} else {
 				// id specified, so this is a request to update an existing Customer
-				url = URL_BASE + "/passengers/" + id;
+				url = URL_BASE + "/customers/" + id;
 				requestMethod = SHClient.RM.PUT;
 				// TODO: Create JSON by creating new Customer.Builder using these values, then JSON-izing
 				requestBody = "{\"id\":\"" + id + "\", \"name\":\"" + name + "\",\"address\":\"" + address + "\"}";
@@ -240,7 +240,7 @@ public class PassengerServlet extends HttpServlet {
 				StringBuilder body = new StringBuilder();
 				body.append(getHtmlPageTop());
 				body.append("<h1>ERROR: Unable to " +
-					(id == null ? "create new passenger!" : "modify passenger " + id + "!") +
+					(id == null ? "create new customer!" : "modify customer " + id + "!") +
 					"</h1>");
 				body.append("<h2>Request Details</h2>");
 				body.append("<p>URL: " + url);
