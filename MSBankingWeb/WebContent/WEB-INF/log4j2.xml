@@ -11,7 +11,7 @@
 				pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36}: %msg%n" />
 		</Console>
 		<File name="FileAppender"
-			fileName="Customer-${date:yyyyMMdd}.log" immediateFlush="true"
+			fileName="CustomerWeb-${date:yyyyMMdd}.log" immediateFlush="true"
 			append="true">
 			<PatternLayout
 				pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36}: %msg%n" />

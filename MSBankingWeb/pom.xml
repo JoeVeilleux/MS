@@ -3,11 +3,11 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.joev</groupId>
-    <artifactId>MSRidesharingWeb</artifactId>
+    <artifactId>MSBankingWeb</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>MSRidesharingWeb</name>
-    <description>Microservice-based Ridesharing Application Web UI</description>
+    <name>MSBankingWeb</name>
+    <description>Microservice-based Banking Application Web UI</description>
 
     <properties>
         <auto-value.version>1.7.2</auto-value.version>
@@ -67,7 +67,7 @@
         </dependency>
         <dependency>
             <groupId>com.joev</groupId>
-            <artifactId>MSRidesharingData</artifactId>
+            <artifactId>MSBankingData</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
