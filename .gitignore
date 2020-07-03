@@ -1,4 +1,11 @@
+# Maven things
 target/
+dependency-reduced-pom.xml
+
+# Application-specific log files
+*.log
+
+# Eclipse things
 .classpath
 .project
 .settings/
