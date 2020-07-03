@@ -44,11 +44,11 @@ public class CustomerServlet extends HttpServlet {
 	// HTML to appear at the top of every page.
 	// TODO: find a way to define this globally (use in JSP and also here in Java code)
 	private static final String htmlPageTop = "<html>\n" + "<head>\n" + "<meta charset=\"UTF-8\">\n"
-			+ "<title>Ridesharing Web UI</title>\n"
-			+ "<link rel=\"stylesheet\" type=\"text/css\" href=\"Rideshare.css\">\n" + "</head>\n" + "<body>\n"
+			+ "<title>Banking Web UI</title>\n"
+			+ "<link rel=\"stylesheet\" type=\"text/css\" href=\"Banking.css\">\n" + "</head>\n" + "<body>\n"
 			+ "<div class=\"appTitle\">\n"
 			+ "<a href=\"%s\"><button class=\"appTitleButton\" type=\"button\" id=\"nav_home\">\n"
-			+ "<img src=\"limo.png\" alt=\"Ridesharing Web UI\" style=\"width:180px;height:60px;\">\n"
+			+ "<img src=\"bank.png\" alt=\"Banking Web UI\" style=\"width:280px;height:40px;\">\n"
 			+ "</button></a>\n" + "</div>\n" + "";
 
 	private String getHtmlPageTop() {
