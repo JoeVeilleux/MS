@@ -9,7 +9,7 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import com.google.auto.value.AutoValue;
 
 @AutoValue
-public abstract class Passenger implements Serializable {
+public abstract class Customer implements Serializable {
     public static final long serialVersionUID = 1L;
 
     @JsonProperty
@@ -22,11 +22,11 @@ public abstract class Passenger implements Serializable {
     public abstract String address();
 
     static Builder builder() {
-        return new AutoValue_Passenger.Builder();
+        return new AutoValue_Customer.Builder();
     }
 
     @AutoValue.Builder
-    @JsonDeserialize(as = AutoValue_Passenger.Builder.class)
+    @JsonDeserialize(as = AutoValue_Customer.Builder.class)
     public abstract static class Builder {
 
         @JsonProperty
@@ -40,6 +40,6 @@ public abstract class Passenger implements Serializable {
         @JsonProperty
         public abstract Builder address(String addr1);
 
-        public abstract Passenger build();
+        public abstract Customer build();
     }
 }

@@ -12,7 +12,7 @@ import com.joev.util.SimpleJsonDb;
 public class PassengerDb {
 	private static final Logger logger = LogManager.getLogger(PassengerDb.class);
 
-	protected static final String DB = "Passenger";
+	protected static final String DB = "Customer";
 	private static final String TABLE = "Passengers";
 	
 	private static final SimpleJsonDb db = new SimpleJsonDb(DB);
@@ -27,49 +27,49 @@ public class PassengerDb {
 		db.rmTable(TABLE);
 	}
 	
-	public List<Passenger> getPassengers() {
-		List<Passenger.Builder> passengerBuilders = db.readTable(Passenger.Builder.class, "Passengers");
-		List<Passenger> passengers = new ArrayList<>();
-		for (Passenger.Builder b : passengerBuilders) {
+	public List<Customer> getPassengers() {
+		List<Customer.Builder> passengerBuilders = db.readTable(Customer.Builder.class, "Passengers");
+		List<Customer> passengers = new ArrayList<>();
+		for (Customer.Builder b : passengerBuilders) {
 			passengers.add(b.build());
 		}
 		return passengers;
 	}
 	
-	public void putPassengers(List<Passenger> passengers) {
+	public void putPassengers(List<Customer> passengers) {
 		db.writeTable("Passengers", passengers);
 	}
 	
-	public Passenger createPassenger(Passenger.Builder passenger) {
-		logger.info("Creating Passenger with: {}", passenger);
+	public Customer createPassenger(Customer.Builder passenger) {
+		logger.info("Creating Customer with: {}", passenger);
 		if (!passenger.id().isPresent()) {
 			passenger.id(String.valueOf(db.nextId()));
 			logger.info("Assigned next available id: {}", passenger.id().get());
 		}
-		List<Passenger> passengers = getPassengers();
+		List<Customer> passengers = getPassengers();
 		passengers.add(passenger.build());
 		putPassengers(passengers);
 		return passenger.build();
 	}
 	
-	public Passenger readPassenger(String id) {
-		logger.info("Reading Passenger with id: {}", id);
-		List<Passenger> passengers = getPassengers();
-		for (Passenger p : passengers) {
+	public Customer readPassenger(String id) {
+		logger.info("Reading Customer with id: {}", id);
+		List<Customer> passengers = getPassengers();
+		for (Customer p : passengers) {
 			if (p.id().equals(id)) {
 				return p;
 			}
 		}
-		logger.warn("Cannot locate Passenger with id: {}", id);
+		logger.warn("Cannot locate Customer with id: {}", id);
 		return null;
 	}
 	
-	public void updatePassenger(Passenger passenger) {
-		logger.info("Updating Passenger: {}", passenger);
-		List<Passenger> passengers = getPassengers();
-		List<Passenger> newPassengers = new ArrayList<>();
+	public void updatePassenger(Customer passenger) {
+		logger.info("Updating Customer: {}", passenger);
+		List<Customer> passengers = getPassengers();
+		List<Customer> newPassengers = new ArrayList<>();
 		boolean foundPassenger = false;
-		for (Passenger p : passengers) {
+		for (Customer p : passengers) {
 			if (p.id().equals(passenger.id())) {
 				foundPassenger = true;
 				newPassengers.add(passenger);
@@ -80,18 +80,18 @@ public class PassengerDb {
 		if (foundPassenger) {
 			putPassengers(newPassengers);
 		} else {
-			logger.warn("Cannot locate Passenger with id: {}", passenger.id());
+			logger.warn("Cannot locate Customer with id: {}", passenger.id());
 			throw new IllegalArgumentException("Could not update passsenger "
 					+ passenger.id() + ". Not found in database.");
 		}
 	}
 	
 	public void deletePassenger(String id) {
-		logger.info("Deleting Passenger with id: {}", id);
-		List<Passenger> passengers = getPassengers();
-		List<Passenger> newPassengers = new ArrayList<>();
+		logger.info("Deleting Customer with id: {}", id);
+		List<Customer> passengers = getPassengers();
+		List<Customer> newPassengers = new ArrayList<>();
 		boolean foundPassenger = false;
-		for (Passenger p : passengers) {
+		for (Customer p : passengers) {
 			if (p.id().equals(id)) {
 				foundPassenger = true;
 			} else {
@@ -101,7 +101,7 @@ public class PassengerDb {
 		if (foundPassenger) {
 			putPassengers(newPassengers);
 		} else {
-			logger.warn("Cannot locate Passenger with id: {}", id);
+			logger.warn("Cannot locate Customer with id: {}", id);
 			throw new IllegalArgumentException("Could not delete passsenger "
 					+ id + ". Not found in database.");
 		}

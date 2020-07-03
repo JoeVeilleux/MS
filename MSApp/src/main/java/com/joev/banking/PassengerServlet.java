@@ -38,9 +38,9 @@ public class PassengerServlet {
 	Request request;
 
 	/**
-	 * Create a new Passenger using the data provided in the payload
+	 * Create a new Customer using the data provided in the payload
 	 * 
-	 * @param passengerBuilder the data for the new Passenger
+	 * @param passengerBuilder the data for the new Customer
 	 * @return Response with: Status=201 CREATED; Location header containing the URL
 	 *         to the newly-created item; Body containing a message acknowledging
 	 *         successful creation (showing ID of the new item)
@@ -48,12 +48,12 @@ public class PassengerServlet {
 	@POST
 	@Path("passengers")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createPassenger(Passenger.Builder passengerBuilder) {
-		Passenger passenger = passengerDb.createPassenger(passengerBuilder);
+	public Response createPassenger(Customer.Builder passengerBuilder) {
+		Customer passenger = passengerDb.createPassenger(passengerBuilder);
 		URI uri = uriInfo.getRequestUri();
 		URI newItemUri = UriBuilder.fromUri(uri).path("{id}").build(passenger.id());
 		return Response.created(newItemUri).type(MediaType.TEXT_PLAIN)
-				.entity("Created new Passenger with id=" + passenger.id()).build();
+				.entity("Created new Customer with id=" + passenger.id()).build();
 	}
 
 	/**
@@ -76,8 +76,8 @@ public class PassengerServlet {
 	@GET
 	@Path("/passengers")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Passenger> getPassengersList() {
-		List<Passenger> data = passengerDb.getPassengers();
+	public List<Customer> getPassengersList() {
+		List<Customer> data = passengerDb.getPassengers();
 		return data;
 	}
 
@@ -103,53 +103,53 @@ public class PassengerServlet {
 	@GET
 	@Path("/passengers/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Passenger getPassenger(@PathParam("id") String id) {
-		Passenger p = passengerDb.readPassenger(id);
+	public Customer getPassenger(@PathParam("id") String id) {
+		Customer p = passengerDb.readPassenger(id);
 		if (p == null) {
-			throw new NotFoundException("Passenger '" + id + "' not found!");
+			throw new NotFoundException("Customer '" + id + "' not found!");
 		}
 		return p;
 	}
 
 	/**
-	 * Update an existing Passenger using the data provided in the payload
+	 * Update an existing Customer using the data provided in the payload
 	 * 
-	 * @param passengerBuilder the data for the new Passenger
+	 * @param passengerBuilder the data for the new Customer
 	 * @return Response with: Status=200 OK; Body containing a message acknowledging
 	 *         successful update of the item
 	 */
 	@PUT
 	@Path("/passengers/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updatePassenger(@PathParam("id") String id, Passenger.Builder passengerBuilder) {
+	public Response updatePassenger(@PathParam("id") String id, Customer.Builder passengerBuilder) {
 		if (!passengerBuilder.id().isPresent()) {
-			// Passenger id wasn't specified in the payload; get it from the URL and plug it in
+			// Customer id wasn't specified in the payload; get it from the URL and plug it in
 			passengerBuilder.id(id);
 		} else if (!passengerBuilder.id().get().equals(id)) {
-			// Passenger id was specified both on the URL and in the request body, with different
+			// Customer id was specified both on the URL and in the request body, with different
 			// values!
 			String errMsg = String.format(
-				"ERROR: Unable to update Passenger. ID specified with conflicting values:"
+				"ERROR: Unable to update Customer. ID specified with conflicting values:"
 				+ " ID from URL=%s, ID from request body=%s.",
 				id, passengerBuilder.id().get());
 			logger.error("updatePassenger(): {}", errMsg);
 			return Response.ok().status(Status.BAD_REQUEST).type(MediaType.TEXT_PLAIN)
 					.entity(errMsg).build();
 		}
-		Passenger passenger = passengerBuilder.build();
+		Customer passenger = passengerBuilder.build();
 		try {
 			passengerDb.updatePassenger(passenger);
 			return Response.ok().build();
 		} catch (IllegalArgumentException e) {
-			throw new NotFoundException("Passenger '" + id + "' not found!");
+			throw new NotFoundException("Customer '" + id + "' not found!");
 		}
 	}
 
 	/**
-	 * Delete an existing Passenger
+	 * Delete an existing Customer
 	 * 
-	 * @param id of Passenger to be deleted
-	 * @return Status=200 OK if successful; Status=404 NOT_FOUND if no Passenger
+	 * @param id of Customer to be deleted
+	 * @return Status=200 OK if successful; Status=404 NOT_FOUND if no Customer
 	 *         with that ID was found. Body will contain success/failure message as
 	 *         text.
 	 */
@@ -158,10 +158,10 @@ public class PassengerServlet {
 	public Response deletePassenger(@PathParam("id") String id) {
 		try {
 			passengerDb.deletePassenger(id);
-			return Response.ok().type(MediaType.TEXT_PLAIN).entity("Passenger '" + id + "' deleted")
+			return Response.ok().type(MediaType.TEXT_PLAIN).entity("Customer '" + id + "' deleted")
 				.build();
 		} catch (IllegalArgumentException e) {
-			throw new NotFoundException("Passenger '" + id + "' not found!");
+			throw new NotFoundException("Customer '" + id + "' not found!");
 		}
 	}
 

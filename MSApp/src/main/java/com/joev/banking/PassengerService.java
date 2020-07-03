@@ -9,7 +9,7 @@ import org.eclipse.jetty.util.log.Logger;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 
 /**
- * Run the Passenger REST service listening on a specific port
+ * Run the Customer REST service listening on a specific port
  */
 public class PassengerService {
 	private static final Logger LOG = Log.getLogger(PassengerService.class);

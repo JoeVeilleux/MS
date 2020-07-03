@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 
 /**
- * Unit test for Passenger.
+ * Unit test for Customer.
  */
 public class PassengerTest {
 	private static final Logger logger = LogManager.getLogger(PassengerTest.class);
@@ -31,8 +31,8 @@ public class PassengerTest {
 
 	@Test
     public void testBuild() {
-		Passenger p = Passenger.builder().id(TEST_ID).name(TEST_NAME).address(TEST_ADDR).build();
-		System.out.println("Constructed Passenger: " + p.toString());
+		Customer p = Customer.builder().id(TEST_ID).name(TEST_NAME).address(TEST_ADDR).build();
+		System.out.println("Constructed Customer: " + p.toString());
 		assertThat(p.id()).isEqualTo(TEST_ID);
 		assertThat(p.name()).isEqualTo(TEST_NAME);
 		assertThat(p.address()).isEqualTo(TEST_ADDR);
