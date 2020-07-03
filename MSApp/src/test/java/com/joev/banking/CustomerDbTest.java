@@ -57,27 +57,27 @@ public class CustomerDbTest {
 		db.rmTables();
 	}
 	
-	/** Test getting the Passengers list */
+	/** Test getting the Customers list */
 	@Test
-	public void testGetPassengers() {
-		List<Customer> data = db.getPassengers();
+	public void testGetCustomers() {
+		List<Customer> data = db.getCustomers();
 		showData("DATA", data);
 		assertThat(data.size()).isEqualTo(EXPECTED_NROWS);
 	}
 	
 	/** Test creating a new Customer */
 	@Test
-	public void testCreatePassenger() {
-		List<Customer> beforeData = db.getPassengers();
+	public void testCreateCustomer() {
+		List<Customer> beforeData = db.getCustomers();
 		showData("BEFORE", beforeData);
 
 		// Create a new Customer
 		Customer.Builder newPB = Customer.builder().name("New Person").address("123 Sesame Street");
-		Customer newP = db.createPassenger(newPB);
+		Customer newP = db.createCustomer(newPB);
 		logger.info("New Customer: " + newP);
 
 		// Redisplay all the data, to prove that the new Customer was added
-		List<Customer> afterData = db.getPassengers();
+		List<Customer> afterData = db.getCustomers();
 		showData("AFTER", afterData);
 		assertWithMessage("Size of Customer list")
 			.that(afterData.size())
@@ -85,22 +85,22 @@ public class CustomerDbTest {
 		assertThat(afterData).contains(newP);
 	}
 	
-	/** Test reading a specific passenger's information */
+	/** Test reading a specific customer's information */
 	@Test
-	public void testReadPassenger() {
+	public void testReadCustomer() {
 		// Read a Customer
-		Customer p = db.readPassenger(TEST_ID);
+		Customer p = db.readCustomer(TEST_ID);
 		logger.info("Customer with id={}: {}", TEST_ID, p);
 
 		assertThat(p).isNotNull();
 		assertThat(p.id()).isEqualTo(TEST_ID);
 	}
 	
-	/** Test reading a nonexistent passenger's information. */
+	/** Test reading a nonexistent customer's information. */
 	@Test
-	public void testReadPassenger_BadId() {
+	public void testReadCustomer_BadId() {
 		// Read a Customer that does not exist
-		Customer p = db.readPassenger(TEST_ID_BAD);
+		Customer p = db.readCustomer(TEST_ID_BAD);
 		logger.info("Customer with id={}: {}", TEST_ID_BAD, p);
 
 		assertThat(p).isNull();
@@ -108,8 +108,8 @@ public class CustomerDbTest {
 	
 	/** Test updating a Customer */
 	@Test
-	public void testUpdatePassenger() {
-		List<Customer> beforeData = db.getPassengers();
+	public void testUpdateCustomer() {
+		List<Customer> beforeData = db.getCustomers();
 		showData("BEFORE", beforeData);
 		Customer origP = beforeData.get(0);
 		logger.info("Original Customer: {}", origP);
@@ -117,9 +117,9 @@ public class CustomerDbTest {
 		String newName = origP.name() + "X";
 		Customer newP = Customer.builder().id(origP.id()).name(newName).address(origP.address()).build();
 		logger.info("New Customer: {}", newP);
-		db.updatePassenger(newP);
+		db.updateCustomer(newP);
 
-		List<Customer> afterData = db.getPassengers();
+		List<Customer> afterData = db.getCustomers();
 		showData("AFTER", afterData);
 		assertThat(afterData.size()).isEqualTo(beforeData.size());
 		Customer actualP = afterData.get(0);
@@ -130,40 +130,40 @@ public class CustomerDbTest {
 	
 	/** Test updating a nonexistent Customer */
 	@Test
-	public void testUpdatePassenger_BadId() {
-		List<Customer> beforeData = db.getPassengers();
+	public void testUpdateCustomer_BadId() {
+		List<Customer> beforeData = db.getCustomers();
 		showData("BEFORE", beforeData);
 
 		Customer newP = Customer.builder().id(TEST_ID_BAD).name("Nosuch User").address("123 Anystreet").build();
 		logger.info("New Customer: {}", newP);
 		try {
-			db.updatePassenger(newP);
-			fail("Updating a nonexistent passenger was expected to throw an Exception, but did not");
+			db.updateCustomer(newP);
+			fail("Updating a nonexistent customer was expected to throw an Exception, but did not");
 		} catch (IllegalArgumentException expected) {
-			logger.info("Updating a nonexistent passenger threw an Exception (AS EXPECTED)", expected);
+			logger.info("Updating a nonexistent customer threw an Exception (AS EXPECTED)", expected);
 		}
 
-		List<Customer> afterData = db.getPassengers();
+		List<Customer> afterData = db.getCustomers();
 		showData("AFTER", afterData);
 		assertThat(afterData.size()).isEqualTo(beforeData.size());
 	}
 	
-	/** Test deleting a passenger */
+	/** Test deleting a customer */
 	@Test
-	public void testDeletePassenger() {
-		List<Customer> beforeData = db.getPassengers();
+	public void testDeleteCustomer() {
+		List<Customer> beforeData = db.getCustomers();
 		showData("BEFORE", beforeData);
 		// Create a new Customer (so that we can delete them)
 		Customer.Builder newPB = Customer.builder().name("New Person To Be Deleted")
 			.address("123 Sesame Street");
-		Customer newP = db.createPassenger(newPB);
+		Customer newP = db.createCustomer(newPB);
 		logger.info("New Customer: " + newP);
 		
-		// Delete the passenger
-		db.deletePassenger(newP.id());
+		// Delete the customer
+		db.deleteCustomer(newP.id());
 
 		// Redisplay all the data, to prove that the new Customer (added above) was deleted
-		List<Customer> afterData = db.getPassengers();
+		List<Customer> afterData = db.getCustomers();
 		showData("AFTER", afterData);
 		assertWithMessage("Size of Customer list")
 			.that(afterData.size())
@@ -171,23 +171,23 @@ public class CustomerDbTest {
 		assertThat(afterData).doesNotContain(newP);
 	}
 	
-	/** Test deleting a nonexistent passenger */
+	/** Test deleting a nonexistent customer */
 	@Test
-	public void testDeletePassenger_BadId() {
-		List<Customer> beforeData = db.getPassengers();
+	public void testDeleteCustomer_BadId() {
+		List<Customer> beforeData = db.getCustomers();
 		showData("BEFORE", beforeData);
 		
-		// Attempt to delete a nonexistent passenger
+		// Attempt to delete a nonexistent customer
 		try {
-			db.deletePassenger(TEST_ID_BAD);
-			fail("Deleting a nonexistent passenger was expected to throw an Exception, but did not");
+			db.deleteCustomer(TEST_ID_BAD);
+			fail("Deleting a nonexistent customer was expected to throw an Exception, but did not");
 		} catch (IllegalArgumentException expected) {
-			logger.info("Deleting a nonexistent passenger threw an Exception (AS EXPECTED)", expected);
+			logger.info("Deleting a nonexistent customer threw an Exception (AS EXPECTED)", expected);
 		}
 
 		// Redisplay all the data, to prove that the Customer was not deleted, nor were any other
-		// changes made to the list-of-passengers
-		List<Customer> afterData = db.getPassengers();
+		// changes made to the list-of-customers
+		List<Customer> afterData = db.getCustomers();
 		showData("AFTER", afterData);
 		assertWithMessage("Size of Customer list")
 			.that(afterData.size())
@@ -197,7 +197,7 @@ public class CustomerDbTest {
 	// Utility routines below
 	
 	private void showData(String tag, List<Customer> data) {
-		logger.info("{}: Passengers table contains {} rows", tag, data.size());
+		logger.info("{}: Customers table contains {} rows", tag, data.size());
 		for (Customer p : data) {
 			logger.info("  Customer: {}", p);
 		}

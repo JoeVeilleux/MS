@@ -13,7 +13,7 @@ public class CustomerDb {
 	private static final Logger logger = LogManager.getLogger(CustomerDb.class);
 
 	protected static final String DB = "Customer";
-	private static final String TABLE = "Passengers";
+	private static final String TABLE = "Customers";
 	
 	private static final SimpleJsonDb db = new SimpleJsonDb(DB);
 	
@@ -27,35 +27,35 @@ public class CustomerDb {
 		db.rmTable(TABLE);
 	}
 	
-	public List<Customer> getPassengers() {
-		List<Customer.Builder> passengerBuilders = db.readTable(Customer.Builder.class, "Passengers");
-		List<Customer> passengers = new ArrayList<>();
-		for (Customer.Builder b : passengerBuilders) {
-			passengers.add(b.build());
+	public List<Customer> getCustomers() {
+		List<Customer.Builder> customerBuilders = db.readTable(Customer.Builder.class, "Customers");
+		List<Customer> customers = new ArrayList<>();
+		for (Customer.Builder b : customerBuilders) {
+			customers.add(b.build());
 		}
-		return passengers;
+		return customers;
 	}
 	
-	public void putPassengers(List<Customer> passengers) {
-		db.writeTable("Passengers", passengers);
+	public void putCustomers(List<Customer> customers) {
+		db.writeTable("Customers", customers);
 	}
 	
-	public Customer createPassenger(Customer.Builder passenger) {
-		logger.info("Creating Customer with: {}", passenger);
-		if (!passenger.id().isPresent()) {
-			passenger.id(String.valueOf(db.nextId()));
-			logger.info("Assigned next available id: {}", passenger.id().get());
+	public Customer createCustomer(Customer.Builder customer) {
+		logger.info("Creating Customer with: {}", customer);
+		if (!customer.id().isPresent()) {
+			customer.id(String.valueOf(db.nextId()));
+			logger.info("Assigned next available id: {}", customer.id().get());
 		}
-		List<Customer> passengers = getPassengers();
-		passengers.add(passenger.build());
-		putPassengers(passengers);
-		return passenger.build();
+		List<Customer> customers = getCustomers();
+		customers.add(customer.build());
+		putCustomers(customers);
+		return customer.build();
 	}
 	
-	public Customer readPassenger(String id) {
+	public Customer readCustomer(String id) {
 		logger.info("Reading Customer with id: {}", id);
-		List<Customer> passengers = getPassengers();
-		for (Customer p : passengers) {
+		List<Customer> customers = getCustomers();
+		for (Customer p : customers) {
 			if (p.id().equals(id)) {
 				return p;
 			}
@@ -64,42 +64,42 @@ public class CustomerDb {
 		return null;
 	}
 	
-	public void updatePassenger(Customer passenger) {
-		logger.info("Updating Customer: {}", passenger);
-		List<Customer> passengers = getPassengers();
-		List<Customer> newPassengers = new ArrayList<>();
-		boolean foundPassenger = false;
-		for (Customer p : passengers) {
-			if (p.id().equals(passenger.id())) {
-				foundPassenger = true;
-				newPassengers.add(passenger);
+	public void updateCustomer(Customer customer) {
+		logger.info("Updating Customer: {}", customer);
+		List<Customer> customers = getCustomers();
+		List<Customer> newCustomers = new ArrayList<>();
+		boolean foundCustomer = false;
+		for (Customer p : customers) {
+			if (p.id().equals(customer.id())) {
+				foundCustomer = true;
+				newCustomers.add(customer);
 			} else {
-				newPassengers.add(p);
+				newCustomers.add(p);
 			}
 		}
-		if (foundPassenger) {
-			putPassengers(newPassengers);
+		if (foundCustomer) {
+			putCustomers(newCustomers);
 		} else {
-			logger.warn("Cannot locate Customer with id: {}", passenger.id());
+			logger.warn("Cannot locate Customer with id: {}", customer.id());
 			throw new IllegalArgumentException("Could not update passsenger "
-					+ passenger.id() + ". Not found in database.");
+					+ customer.id() + ". Not found in database.");
 		}
 	}
 	
-	public void deletePassenger(String id) {
+	public void deleteCustomer(String id) {
 		logger.info("Deleting Customer with id: {}", id);
-		List<Customer> passengers = getPassengers();
-		List<Customer> newPassengers = new ArrayList<>();
-		boolean foundPassenger = false;
-		for (Customer p : passengers) {
+		List<Customer> customers = getCustomers();
+		List<Customer> newCustomers = new ArrayList<>();
+		boolean foundCustomer = false;
+		for (Customer p : customers) {
 			if (p.id().equals(id)) {
-				foundPassenger = true;
+				foundCustomer = true;
 			} else {
-				newPassengers.add(p);
+				newCustomers.add(p);
 			}
 		}
-		if (foundPassenger) {
-			putPassengers(newPassengers);
+		if (foundCustomer) {
+			putCustomers(newCustomers);
 		} else {
 			logger.warn("Cannot locate Customer with id: {}", id);
 			throw new IllegalArgumentException("Could not delete passsenger "

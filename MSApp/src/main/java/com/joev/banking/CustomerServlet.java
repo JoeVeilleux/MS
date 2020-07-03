@@ -29,7 +29,7 @@ public class CustomerServlet {
 	private static final Logger logger = LogManager.getLogger(CustomerServlet.class);
 	// TODO: Need more logging in this module
 
-	private CustomerDb passengerDb = new CustomerDb();
+	private CustomerDb customerDb = new CustomerDb();
 
 	@Context
 	UriInfo uriInfo;
@@ -40,71 +40,71 @@ public class CustomerServlet {
 	/**
 	 * Create a new Customer using the data provided in the payload
 	 * 
-	 * @param passengerBuilder the data for the new Customer
+	 * @param customerBuilder the data for the new Customer
 	 * @return Response with: Status=201 CREATED; Location header containing the URL
 	 *         to the newly-created item; Body containing a message acknowledging
 	 *         successful creation (showing ID of the new item)
 	 */
 	@POST
-	@Path("passengers")
+	@Path("customers")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createPassenger(Customer.Builder passengerBuilder) {
-		Customer passenger = passengerDb.createPassenger(passengerBuilder);
+	public Response createCustomer(Customer.Builder customerBuilder) {
+		Customer customer = customerDb.createCustomer(customerBuilder);
 		URI uri = uriInfo.getRequestUri();
-		URI newItemUri = UriBuilder.fromUri(uri).path("{id}").build(passenger.id());
+		URI newItemUri = UriBuilder.fromUri(uri).path("{id}").build(customer.id());
 		return Response.created(newItemUri).type(MediaType.TEXT_PLAIN)
-				.entity("Created new Customer with id=" + passenger.id()).build();
+				.entity("Created new Customer with id=" + customer.id()).build();
 	}
 
 	/**
-	 * Get a list of all passengers, as text
+	 * Get a list of all customers, as text
 	 * 
-	 * @return list of Passengers in text form
+	 * @return list of Customers in text form
 	 */
 	@GET
-	@Path("/passengers")
+	@Path("/customers")
 	@Produces({ MediaType.TEXT_HTML, MediaType.TEXT_PLAIN })
-	public String getPassengersListAsText() {
-		return getPassengersList().toString();
+	public String getCustomersListAsText() {
+		return getCustomersList().toString();
 	}
 
 	/**
-	 * Get a list of all passengers, as JSON
+	 * Get a list of all customers, as JSON
 	 * 
-	 * @return list of Passengers in JSON form
+	 * @return list of Customers in JSON form
 	 */
 	@GET
-	@Path("/passengers")
+	@Path("/customers")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Customer> getPassengersList() {
-		List<Customer> data = passengerDb.getPassengers();
+	public List<Customer> getCustomersList() {
+		List<Customer> data = customerDb.getCustomers();
 		return data;
 	}
 
 	/**
-	 * Get details for a specific passenger, as text
+	 * Get details for a specific customer, as text
 	 * 
-	 * @return data for the requested passenger (as text), or NOT_FOUND if there is
-	 *         no such passenger
+	 * @return data for the requested customer (as text), or NOT_FOUND if there is
+	 *         no such customer
 	 */
 	@GET
-	@Path("/passengers/{id}")
+	@Path("/customers/{id}")
 	@Produces({ MediaType.TEXT_HTML, MediaType.TEXT_PLAIN })
-	public String getPassengerAsText(@PathParam("id") String id) {
-		return getPassenger(id).toString();
+	public String getCustomerAsText(@PathParam("id") String id) {
+		return getCustomer(id).toString();
 	}
 
 	/**
-	 * Get details for a specific passenger, as JSON
+	 * Get details for a specific customer, as JSON
 	 * 
-	 * @return data for the requested passenger (as JSON), or NOT_FOUND if there is
-	 *         no such passenger
+	 * @return data for the requested customer (as JSON), or NOT_FOUND if there is
+	 *         no such customer
 	 */
 	@GET
-	@Path("/passengers/{id}")
+	@Path("/customers/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Customer getPassenger(@PathParam("id") String id) {
-		Customer p = passengerDb.readPassenger(id);
+	public Customer getCustomer(@PathParam("id") String id) {
+		Customer p = customerDb.readCustomer(id);
 		if (p == null) {
 			throw new NotFoundException("Customer '" + id + "' not found!");
 		}
@@ -114,31 +114,31 @@ public class CustomerServlet {
 	/**
 	 * Update an existing Customer using the data provided in the payload
 	 * 
-	 * @param passengerBuilder the data for the new Customer
+	 * @param customerBuilder the data for the new Customer
 	 * @return Response with: Status=200 OK; Body containing a message acknowledging
 	 *         successful update of the item
 	 */
 	@PUT
-	@Path("/passengers/{id}")
+	@Path("/customers/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updatePassenger(@PathParam("id") String id, Customer.Builder passengerBuilder) {
-		if (!passengerBuilder.id().isPresent()) {
+	public Response updateCustomer(@PathParam("id") String id, Customer.Builder customerBuilder) {
+		if (!customerBuilder.id().isPresent()) {
 			// Customer id wasn't specified in the payload; get it from the URL and plug it in
-			passengerBuilder.id(id);
-		} else if (!passengerBuilder.id().get().equals(id)) {
+			customerBuilder.id(id);
+		} else if (!customerBuilder.id().get().equals(id)) {
 			// Customer id was specified both on the URL and in the request body, with different
 			// values!
 			String errMsg = String.format(
 				"ERROR: Unable to update Customer. ID specified with conflicting values:"
 				+ " ID from URL=%s, ID from request body=%s.",
-				id, passengerBuilder.id().get());
-			logger.error("updatePassenger(): {}", errMsg);
+				id, customerBuilder.id().get());
+			logger.error("updateCustomer(): {}", errMsg);
 			return Response.ok().status(Status.BAD_REQUEST).type(MediaType.TEXT_PLAIN)
 					.entity(errMsg).build();
 		}
-		Customer passenger = passengerBuilder.build();
+		Customer customer = customerBuilder.build();
 		try {
-			passengerDb.updatePassenger(passenger);
+			customerDb.updateCustomer(customer);
 			return Response.ok().build();
 		} catch (IllegalArgumentException e) {
 			throw new NotFoundException("Customer '" + id + "' not found!");
@@ -154,10 +154,10 @@ public class CustomerServlet {
 	 *         text.
 	 */
 	@DELETE
-	@Path("/passengers/{id}")
-	public Response deletePassenger(@PathParam("id") String id) {
+	@Path("/customers/{id}")
+	public Response deleteCustomer(@PathParam("id") String id) {
 		try {
-			passengerDb.deletePassenger(id);
+			customerDb.deleteCustomer(id);
 			return Response.ok().type(MediaType.TEXT_PLAIN).entity("Customer '" + id + "' deleted")
 				.build();
 		} catch (IllegalArgumentException e) {
