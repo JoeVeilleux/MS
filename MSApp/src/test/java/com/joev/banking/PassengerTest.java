@@ -11,8 +11,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-import com.joev.banking.Passenger;
-
 /**
  * Unit test for Passenger.
  */

@@ -16,14 +16,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.ws.rs.core.UriBuilder;
-import javax.ws.rs.core.UriInfo;
-
-import com.joev.banking.Passenger;
 import com.sun.jersey.api.NotFoundException;
 
 @Path("/")

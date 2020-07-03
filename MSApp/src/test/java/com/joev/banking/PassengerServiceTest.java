@@ -20,12 +20,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-import com.joev.banking.Passenger;
-import com.joev.banking.PassengerDb;
-import com.joev.banking.PassengerService;
 import com.joev.util.SHClient;
-import com.joev.util.SimpleJsonDb;
 import com.joev.util.SHClient.SHResp;
+import com.joev.util.SimpleJsonDb;
 
 public class PassengerServiceTest {
 	private static final Logger logger = LogManager.getLogger(PassengerServiceTest.class);

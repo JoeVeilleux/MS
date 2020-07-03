@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.joev.banking.Passenger;
 import com.joev.util.SimpleJsonDb;
 
 public class PassengerDb {
