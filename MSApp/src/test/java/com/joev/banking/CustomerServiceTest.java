@@ -101,7 +101,7 @@ public class CustomerServiceTest {
 		assertThat(customers).isNotEmpty();
 	}
 	
-	/** Test creating a new Passenter */
+	/** Test creating a new Customer */
 	@Test
 	public void testCreateCustomer() throws Exception {
 		SHResp response = SHClient.doHttp(URL_BASE + "/customers", SHClient.RM.POST, TEST_NEWUSER_JSON, SHClient.RP.CON_JSON, SHClient.RP.ACC_JSON);
