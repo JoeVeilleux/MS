@@ -27,7 +27,7 @@ public class SHClient {
 	/** Request properties */
 	public enum RP {
 		ACC_JSON("Accept", "application/json"),
-		ACC_TEXT("Accept", "text/html"),
+		ACC_TEXT("Accept", "text/*"),
 		CON_JSON("Content-Type", "application/json"),
 		;
 		String attr;
