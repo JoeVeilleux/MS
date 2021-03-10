@@ -13,7 +13,7 @@
         <jvm.version>1.8</jvm.version>
         <junit.version>4.13.1</junit.version>
         <jersey.version>1.19.4</jersey.version>
-        <jetty.version>9.4.35.v20201120</jetty.version>
+        <jetty.version>11.0.1</jetty.version>
         <log4j.version>2.13.3</log4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
