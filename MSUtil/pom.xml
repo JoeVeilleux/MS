@@ -17,7 +17,7 @@
 		<junit.version>4.13.1</junit.version>
 		<jersey.version>1.19.4</jersey.version>
 		<jetty.version>9.4.28.v20200408</jetty.version>
-		<log4j.version>2.13.3</log4j.version>
+		<log4j.version>2.15.0</log4j.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
